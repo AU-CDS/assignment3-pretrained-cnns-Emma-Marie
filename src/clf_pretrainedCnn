@@ -24,7 +24,85 @@ from sklearn.metrics import classification_report
 # for plotting
 import numpy as np
 import matplotlib.pyplot as plt
+import os
+# for json files
+import pandas as pd
+
+# plotting function
+def plot_history(H, epochs):
+    plt.style.use("seaborn-colorblind")
+
+    plt.figure(figsize=(12,6))
+    plt.subplot(1,2,1)
+    plt.plot(np.arange(0, epochs), H.history["loss"], label="train_loss")
+    plt.plot(np.arange(0, epochs), H.history["val_loss"], label="val_loss", linestyle=":")
+    plt.title("Loss curve")
+    plt.xlabel("Epoch")
+    plt.ylabel("Loss")
+    plt.tight_layout()
+    plt.legend()
+
+    plt.subplot(1,2,2)
+    plt.plot(np.arange(0, epochs), H.history["accuracy"], label="train_acc")
+    plt.plot(np.arange(0, epochs), H.history["val_accuracy"], label="val_acc", linestyle=":")
+    plt.title("Accuracy curve")
+    plt.xlabel("Epoch")
+    plt.ylabel("Accuracy")
+    plt.tight_layout()
+    plt.legend()
+    plt.show()
 
 # load data
+#create empty list of folder paths
+data_path = os.path.join("..", "..", "431824", "images")
+folderpaths = []
+#create folderpaths
+for folder in os.listdir(data_path):
+    folderpath = os.path.join(data_path, folder)
+    folderpaths.append(folderpath)
+folderpaths = sorted(folderpaths)
 
-# 
+for folderpath in folderpaths:
+    for filename in os.listdir(folderpath):
+        if filename.endswith("710.jpeg"): #remove 710
+            filepath = os.path.join(folderpath, filename) 
+            image = load_img(filepath, target_size=(224, 224))
+            # convert image pixels to numpy array 
+            image = img_to_array(image)
+            # reshape image data
+            image = image.reshape((1, image.shape[0], image.shape[1], image.shape[2]))
+            # prepare image for model
+            image = preprocess_input(image)
+            print(f"The image {filename} in the folder {folderpath} has the size {np.shape(image)}.")
+
+### My first attempt to load data
+#x_test = load_img('../../431824/images/test/0.jpeg', target_size=(224, 224))
+#x_train = load_img('../../431824/images/train', target_size=(224, 224))
+#x_val = load_img('../../431824/images/val', target_size=(224, 224))
+#print(np.shape(x_test))
+
+### My second attempt to load data
+#for filename in os.listdir(test_folder):
+#    if filename.endswith(".jpeg"):
+#        filepath = os.path.join(test_folder, filename) 
+#        test_img = load_img(filepath, target_size=(224, 224))
+
+# Load test, train and validation labels
+y_test_path = os.path.join("..", "..", "431824", "images", "metadata","test_data.json" )
+y_test = pd.read_json(y_test_path, lines=True)
+y_train_path = os.path.join("..", "..", "431824", "images", "metadata","train_data.json" )
+y_train = pd.read_json(y_train_path, lines=True)
+y_val_path = os.path.join("..", "..", "431824", "images", "metadata","val_data.json" )
+y_val = pd.read_json(y_val_path, lines=True)
+
+# load the model
+model = VGG16()
+print("Model loaded!")
+
+# Fine tune model???
+
+# predict the probability across all output classes
+y_pred = model.predict(image)
+# convert the probabilities to class labels
+label = decode_predictions(y_pred)
+print(f"{filename}, {label}")
