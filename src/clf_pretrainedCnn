@@ -1,0 +1,30 @@
+# tf tools
+import tensorflow as tf
+# image processsing
+from tensorflow.keras.preprocessing.image import (load_img,
+                                                  img_to_array,
+                                                  ImageDataGenerator)
+# VGG16 model
+from tensorflow.keras.applications.vgg16 import (preprocess_input,
+                                                 decode_predictions,
+                                                 VGG16)
+# layers
+from tensorflow.keras.layers import (Flatten, 
+                                     Dense, 
+                                     Dropout, 
+                                     BatchNormalization)
+# generic model object
+from tensorflow.keras.models import Model
+# optimizers
+from tensorflow.keras.optimizers.schedules import ExponentialDecay
+from tensorflow.keras.optimizers import SGD
+#scikit-learn
+from sklearn.preprocessing import LabelBinarizer
+from sklearn.metrics import classification_report
+# for plotting
+import numpy as np
+import matplotlib.pyplot as plt
+
+# load data
+
+# 
