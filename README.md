@@ -3,3 +3,6 @@
 # Using pretrained CNNs for image classification
 
 EDIT README!!!
+
+Ross tips: You should not upload the data to your repo - it's around 3GB in size.
+Instead, you should document in the README file where your data comes from, how a user should find it, and where it should be saved in order for your code to work correctly.
