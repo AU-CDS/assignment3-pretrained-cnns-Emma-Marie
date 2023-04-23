@@ -54,18 +54,17 @@ def plot_history(H, epochs):
     plt.show()
 
 # Load the json metadata (containing the labels)
-test_meta_path = os.path.join("..", "..", "431824", "images", "metadata","test_data.json" )
+test_meta_path = os.path.join("..", "..", "..", "431824", "images", "metadata","test_data.json" )
 test_metadata = pd.read_json(test_meta_path, lines=True)
-train_meta_path = os.path.join("..", "..", "431824", "images", "metadata","train_data.json" )
+train_meta_path = os.path.join("..", "..", "..", "431824", "images", "metadata","train_data.json" )
 train_metadata = pd.read_json(train_meta_path, lines=True)
-val_meta_path = os.path.join("..", "..", "431824", "images", "metadata","val_data.json" )
+val_meta_path = os.path.join("..", "..", "..", "431824", "images", "metadata","val_data.json" )
 val_metadata = pd.read_json(val_meta_path, lines=True)
 
 # creating random samples to make machine faster
-test_metadata = test_metadata.sample(n=150)
+test_metadata = test_metadata.sample(n=125)
 train_metadata = train_metadata.sample(n=500)
 val_metadata = val_metadata.sample(n=100)
-
 
 # generators for splitting data into test, train and validation
 train_generator = ImageDataGenerator(
@@ -79,10 +78,10 @@ test_generator = ImageDataGenerator(
 )
 
 # Split the data and combining images and labels
-directory_images = os.path.join("..", "..", "431824")
+directory_images = os.path.join("..", "..", "..", "431824")
 TARGET_size=(224, 224)
 BATCH_Size = 32
-
+#training data
 train_images = train_generator.flow_from_dataframe(
     dataframe=train_metadata,
     directory = directory_images,
@@ -96,7 +95,7 @@ train_images = train_generator.flow_from_dataframe(
     seed=42,
     subset='training'
 )
-
+# validation data
 val_images = val_generator.flow_from_dataframe(
     dataframe=val_metadata,
     directory = directory_images, 
@@ -109,7 +108,7 @@ val_images = val_generator.flow_from_dataframe(
     shuffle=True,
     seed=42,
 )
-
+# test data
 test_images = test_generator.flow_from_dataframe(
     dataframe=test_metadata,
     directory = directory_images,
@@ -125,8 +124,7 @@ test_images = test_generator.flow_from_dataframe(
 # load the VGG16 model without classifier layers
 model = VGG16(include_top=False,
               pooling='avg', 
-              input_shape=(224, 224, 3)) # this should fit the size of the indo images
-
+              input_shape=(224, 224, 3)) # set to fit the size of the indo images
 # mark loaded layers as not trainable (freeze all weights)
 for layer in model.layers: 
     layer.trainable = False
@@ -151,17 +149,13 @@ lr_schedule = tf.keras.optimizers.schedules.ExponentialDecay(
     decay_steps=10000,
     decay_rate=0.9)
 sgd = SGD(learning_rate=lr_schedule)
-
 model.compile(optimizer=sgd,
               loss='categorical_crossentropy',
               metrics=['accuracy'])
 # summarize model
 model.summary()
 
-# Binarize images?? (as in nb 9)
-
-#fit model to indo fashion
-
+# fit model to indo fashion and train model
 history = model.fit(
     train_images, 
     steps_per_epoch = len(train_images),
@@ -170,4 +164,8 @@ history = model.fit(
     epochs = 10
     )
 
-# train model on only a subset of data (because it takes several hours!)
+# training history plot
+
+# validation history plot
+
+# save classification report
