@@ -23,37 +23,14 @@ from tensorflow.keras.optimizers import SGD
 from sklearn.preprocessing import LabelBinarizer
 from sklearn.metrics import classification_report
 # for plotting
-import numpy as np
 import matplotlib.pyplot as plt
 # for json files
 import pandas as pd
 import json
-
-
-# plotting function
-def plot_history(H, epochs):
-    plt.style.use("seaborn-colorblind")
-
-    plt.figure(figsize=(12,6))
-    plt.subplot(1,2,1)
-    plt.plot(np.arange(0, epochs), H.history["loss"], label="train_loss")
-    plt.plot(np.arange(0, epochs), H.history["val_loss"], label="val_loss", linestyle=":")
-    plt.title("Loss curve")
-    plt.xlabel("Epoch")
-    plt.ylabel("Loss")
-    plt.tight_layout()
-    plt.legend()
-
-    plt.subplot(1,2,2)
-    plt.plot(np.arange(0, epochs), H.history["accuracy"], label="train_acc")
-    plt.plot(np.arange(0, epochs), H.history["val_accuracy"], label="val_acc", linestyle=":")
-    plt.title("Accuracy curve")
-    plt.xlabel("Epoch")
-    plt.ylabel("Accuracy")
-    plt.tight_layout()
-    plt.legend()
-    #plt.show()
-
+# utils plotting function
+import sys
+sys.path.append(".")
+import utils.plotting as pl
 
 def get_data():
     # Load the json metadata (containing the labels)
@@ -65,9 +42,9 @@ def get_data():
     #val_df = pd.read_json(os.path.join("in", "images", "metadata","val_data.json" ), lines=True)
 
     # creating random samples to make machine faster
-    #test_df = test_df.sample(n=75)
-    #train_df = train_df.sample(n=250)
-    #val_df = val_df.sample(n=50)
+    test_df = test_df.sample(n=75)
+    train_df = train_df.sample(n=250)
+    val_df = val_df.sample(n=50)
 
     # Generator train data
     train_datagen = ImageDataGenerator(horizontal_flip=True,
@@ -80,7 +57,7 @@ def get_data():
     )
 
     images_dir = os.path.join("..", "..", "431824")
-    # images_dir = os.path.join("in")
+    #images_dir = os.path.join("in")
     TARGET_size = (224, 224)
     BATCH_size = 32
 
@@ -125,7 +102,7 @@ def get_data():
         shuffle = True,
         seed = 42,
     )
-    return train_images, test_images, val_images
+    return train_images, test_images, val_images, test_df
 
 def train_classifier(train_images, test_images, val_images):
     # load the VGG16 model without classifier layers
@@ -172,15 +149,15 @@ def train_classifier(train_images, test_images, val_images):
         validation_steps = len(val_images),
         epochs = 10)
 
-    return history
+    return history, model
 
 def main():
     # Load and prepare data
-    train_images, test_images, val_images = get_data()
+    train_images, test_images, val_images, test_df = get_data()
     # train pretrained CNN
-    history = train_classifier(train_images, test_images, val_images)
+    history, model = train_classifier(train_images, test_images, val_images)
     # Training and validation history plots
-    plot_history(history, 10)
+    pl.plot_history(history, 10)
     output_path = os.path.join("out", "train_and_val_plots.png")
     plt.savefig(output_path, dpi = 100)
     print("Plot is saved!")
