@@ -23,6 +23,7 @@ from tensorflow.keras.optimizers import SGD
 from sklearn.preprocessing import LabelBinarizer
 from sklearn.metrics import classification_report
 # for plotting
+import numpy as np
 import matplotlib.pyplot as plt
 # for json files
 import pandas as pd
@@ -34,17 +35,14 @@ import utils.plotting as pl
 
 def get_data():
     # Load the json metadata (containing the labels)
-    test_df = pd.read_json(os.path.join("..", "..", "431824", "images", "metadata","test_data.json" ), lines=True)
-    #test_df = pd.read_json(os.path.join("in", "images", "metadata","test_data.json" ), lines=True)
-    train_df = pd.read_json(os.path.join("..", "..", "431824", "images", "metadata","train_data.json" ), lines=True)
-    #train_df = pd.read_json(os.path.join("in", "images", "metadata","train_data.json" ), lines=True)
-    val_df = pd.read_json(os.path.join("..", "..", "431824", "images", "metadata","val_data.json" ), lines=True)
-    #val_df = pd.read_json(os.path.join("in", "images", "metadata","val_data.json" ), lines=True)
+    test_df = pd.read_json(os.path.join("in", "images", "metadata","test_data.json" ), lines=True)
+    train_df = pd.read_json(os.path.join("in", "images", "metadata","train_data.json" ), lines=True)
+    val_df = pd.read_json(os.path.join("in", "images", "metadata","val_data.json" ), lines=True)
 
     # creating random samples to make machine faster
-    test_df = test_df.sample(n=75)
-    train_df = train_df.sample(n=250)
-    val_df = val_df.sample(n=50)
+    #test_df = test_df.sample(n=75)
+    #train_df = train_df.sample(n=250)
+    #val_df = val_df.sample(n=50)
 
     # Generator train data
     train_datagen = ImageDataGenerator(horizontal_flip=True,
@@ -174,6 +172,8 @@ def main():
     report = classification_report(y_test, pred)
     # Save report in "out"
     file_path = os.path.join("out", "classification_report.txt")
+    with open(file_path, "w") as f: #"writing" classifier report and saving it
+        f.write(report)
     print("Classification report is saved!")
 
 if __name__ == "__main__":
