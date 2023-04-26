@@ -18,9 +18,21 @@ My model has been trained on the Indo fashion dataset, which consists of 106K im
 I haven't included the data in my Github repo because of the size of it (3 GB). Before running the script, please download the Indo fashion data set and save it in the ```in``` folder. 
 The data can be accessed and download (3 GB) here: https://www.kaggle.com/datasets/validmodel/indo-fashion-dataset 
 
-__NB__: I used the data set provided by my teacher Ross, but it is organized slightly different from the dataset loaded directly from Kaggle. Therefore, when you download the dataset from  Kaggel, you have to manually create an extra folder inside the ```image```folder and name it ```metadata```. Then place the three .json files in the ```metadata``` folder. Now the ```image```folder contains four folders called ```train```, ```test```, ```val``` and ```metadata```. 
-Upload the ```image``` folder to your coding program and place it in the ```in``` folder. 
+__NB__: I used the data set provided by my teacher Ross, but it is organized slightly different from the dataset loaded directly from Kaggle. Therefore, when you download the dataset from  Kaggel, you have to manually create an extra folder inside the ```images```folder and name it ```metadata```. Then place the three .json files in the ```metadata``` folder. Now the ```images```folder contains four folders called ```train```, ```test```, ```val``` and ```metadata```. 
+Upload the ```images``` folder to your coding program and place it in the ```in``` folder. 
 
+```
+- in
+    - images
+        - metadata
+            - test_data.json
+            - train_data.json
+            - val_data.json
+        - test
+        - train
+        - val
+```
+    
 ## Scripts
 This project contains one script called ```clf_pretrainedCnn```, which can be found in the ```src``` folder. The script trains a model to classify pieces of clothing from the  Indo fashion dataset. The script consists of the following parts:
 
@@ -39,24 +51,21 @@ For the code to run, you must have Bash and Python 3 installed. I created and te
 ### Running the scripts
 1) Begin by loading the data as described above. 
 2) Then run the script in the following way:
-- run "bash setup.sh" from the commandline to create a virtual environment and install the required packages.
-- run "bash run.sh" from the commandline to activate the virtual environment, run the code in the clf_pretrainedCnn script, and deactivate the environment.
+- run "bash setup.sh" from the commandline to create a virtual environment and install the required packages:
+    
+        bash setup.sh
 
-### Further notes on running script
-When I trained the model on the full data set, it took me around 18 hours to train the model using the biggest machine on Ucloud (64 CPU)! Consider running the code using only a small sample of the data, if you just want to test if the code is working properly. This can be done by uncommenting line 68-70 in the ```clf_pretrainedCnn```script. 
+- run "bash run.sh" from the commandline to activate the virtual environment, run the code in the clf_pretrainedCnn script, and deactivate the environment:
+
+        bash run.sh
 
 ## Utils
-In the ```utils``` folder is a script called ```plotting.py```which contains a plotting function. The function is created by my teacher Ross, and we used it in class. I call this script in my of main scripts and use the function to plot the training and validation history plots of the model. 
+In the ```utils``` folder is a script called ```plotting.py``` which contains a plotting function. The function is created by my teacher Ross, and we used it in class. I call this script in my of main scripts and use the function to plot the training and validation history plots of the model. 
 
 ## Discussing of the results
-
-Accuracy: 
-
-Problems?: 
+I only trained the model on a random sample of the data set, because of its size. Therefore, the model is less accurate than it could have been, if it was trained on all the data. 
 
 ## References
 Indo fashion dataset, Kaggle: https://www.kaggle.com/datasets/validmodel/indo-fashion-dataset
 
 VGG16, https://keras.io/api/applications/vgg/ 
-
-"Indo Fashion Classification using EfficientNetB0", Marionette, Kaggel: https://www.kaggle.com/code/vencerlanz09/indo-fashion-classification-using-efficientnetb0 (latest access 24th april 2023)
