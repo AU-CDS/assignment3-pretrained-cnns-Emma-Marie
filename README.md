@@ -63,7 +63,7 @@ For the code to run, you must have Bash and Python 3 installed. I created and te
 In the ```utils``` folder is a script called ```plotting.py``` which contains a plotting function. The function is created by my teacher Ross, and we used it in class. I call this script in my of main scripts and use the function to plot the training and validation history plots of the model. 
 
 ## Discussing of the results
-I only trained the model on a random sample of the data set, because of its size. Therefore, the model is less accurate than it could have been, if it was trained on all the data. 
+I only trained the model on a random sample of the data set, because of its size. Therefore, the model is less accurate than it could have been, if it was trained on all the data. Still, the results is not that bad. 
 
 ## References
 Indo fashion dataset, Kaggle: https://www.kaggle.com/datasets/validmodel/indo-fashion-dataset
