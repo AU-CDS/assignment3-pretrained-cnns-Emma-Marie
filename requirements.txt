@@ -1,5 +1,5 @@
-numpy
+numpy==1.24.3
 pandas
-matplotlib
+matplotlib==3.7.1
 scikit-learn
 tensorflow-cpu
