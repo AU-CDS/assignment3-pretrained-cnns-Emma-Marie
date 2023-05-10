@@ -28,9 +28,6 @@ from sklearn.metrics import classification_report
 # for plotting
 import numpy as np
 import matplotlib.pyplot as plt
-# for json files
-import json # necessary?
-
 # utils plotting function
 import sys
 sys.path.append(".")
@@ -39,16 +36,9 @@ import utils.plotting as pl
 
 def get_data():
     # Load the json metadata (containing the labels)
-    #test_df = pd.read_json(os.path.join("in", "images", "metadata","test_data.json" ), lines=True)
-    test_df = pd.read_json(os.path.join("..", "..", "431824", "images", "metadata", "test_data.json" ), lines=True)
-    #train_df = pd.read_json(os.path.join("in", "images", "metadata","train_data.json" ), lines=True)
-    train_df = pd.read_json(os.path.join("..", "..", "431824", "images", "metadata", "train_data.json" ), lines=True)
-    #val_df = pd.read_json(os.path.join("in", "images", "metadata","val_data.json" ), lines=True)
-    val_df = pd.read_json(os.path.join("..", "..", "431824", "images", "metadata", "val_data.json" ), lines=True)
-
-    #test_df = test_df.sample(n=1200)
-    #train_df = train_df.sample(n=4000)
-    #val_df = val_df.sample(n=800)
+    test_df = pd.read_json(os.path.join("in", "images", "metadata","test_data.json" ), lines=True)
+    train_df = pd.read_json(os.path.join("in", "images", "metadata","train_data.json" ), lines=True)
+    val_df = pd.read_json(os.path.join("in", "images", "metadata","val_data.json" ), lines=True)
 
     # Generator train data
     train_datagen = ImageDataGenerator(horizontal_flip=True,
@@ -60,7 +50,8 @@ def get_data():
                                     rescale=1./255.
     )
 
-    images_dir = os.path.join("in")
+    #images_dir = os.path.join("in")
+    images_dir = os.path.join("..", "..", "431824")
     TARGET_size = (224, 224)
     BATCH_size = 32
 
@@ -163,8 +154,7 @@ def main():
     history, model = train_classifier(train_images, test_images, val_images)
     # Training and validation history plots
     pl.plot_history(history, 10)
-    #output_path = os.path.join("out", "train_and_val_plots.png")
-    output_path = os.path.join("out", "TEST_plots.png")
+    output_path = os.path.join("out", "train_and_val_plots.png")
     plt.savefig(output_path, dpi = 100)
     print("Plot is saved!")
     # Predictions
@@ -179,8 +169,7 @@ def main():
     y_test = list(test_df.class_label)
     report = classification_report(y_test, pred)
     # Save report in "out"
-    #file_path = os.path.join("out", "classification_report.txt")
-    file_path = os.path.join("out", "TEST_rep.txt")
+    file_path = os.path.join("out", "classification_report.txt")
     with open(file_path, "w") as f: #"writing" classifier report and saving it
         f.write(report)
     print("Classification report is saved!")

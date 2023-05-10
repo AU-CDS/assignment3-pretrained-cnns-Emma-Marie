@@ -1,5 +1,5 @@
-numpy==1.24.3
-pandas
+numpy # pipreqs says numpy==1.24.3, but some of the other packages needs other numpy versions
+pandas==2.0.1
 matplotlib==3.7.1
-scikit-learn
-tensorflow-cpu
+scikit_learn==1.2.2
+tensorflow==2.12.0
