@@ -50,8 +50,7 @@ def get_data():
                                     rescale=1./255.
     )
 
-    #images_dir = os.path.join("in")
-    images_dir = os.path.join("..", "..", "431824")
+    images_dir = os.path.join("in")
     TARGET_size = (224, 224)
     BATCH_size = 32
 
