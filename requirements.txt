@@ -1,4 +1,4 @@
-numpy # pipreqs says numpy==1.24.3, but some of the other packages needs other numpy versions
+numpy # I have not specified a version, because some of the other packages needs different numpy versions
 pandas==2.0.1
 matplotlib==3.7.1
 scikit_learn==1.2.2
