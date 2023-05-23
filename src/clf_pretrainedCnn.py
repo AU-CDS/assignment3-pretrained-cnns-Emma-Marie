@@ -41,9 +41,11 @@ def get_data():
     test_datagen = ImageDataGenerator(
                                     rescale=1./255.
     )
-
+    
     images_dir = os.path.join (".")
+    # define target size
     TARGET_size = (224, 224)
+    # define batch size
     BATCH_size = 32
 
     # Generating training data
@@ -144,7 +146,6 @@ def report_and_plot(test_df, history, pred):
     output_path = os.path.join("out", "train_and_val_plots.png")
     plt.savefig(output_path, dpi = 100)
     print("Plot is saved!")
-    
     # Create classification report
     y_test = list(test_df.class_label)
     report = classification_report(y_test, pred)
